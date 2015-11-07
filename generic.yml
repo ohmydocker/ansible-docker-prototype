@@ -3,6 +3,7 @@
   vars:
      port_contents: "{{ lookup('file', 'port') }}"
      NAME_contents: "{{ lookup('file', 'NAME') }}"
+     cstate: "{{ cstate | default(started) }}"
   hosts: "{{ NAME_contents }}"
   sudo: True
   tasks:
@@ -10,7 +11,7 @@
     docker:
       name: "{{ NAME_contents }}"
       image: busybox
-      state: reloaded
+      state: "{{ cstate }}"
       restart_policy: always
       ports:
       - "{{ port_contents }}"
